@@ -7,7 +7,9 @@ let lastShotTime2 = 0;
 let shotDelay1 = 700;
 let shotDelay2 = 3000;
 let powerUP;
-let hasPowerUp = "no";
+let hasPowerUp = false;
+//let radioVision = 30;
+//let fog;
 
 function setup() {
   createCanvas(windowWidth - 4, windowHeight - 4);
@@ -34,33 +36,39 @@ function setup() {
   powerUP.tile = "u";
   powerUP.diameter = 20;
 
+
   tilesGroup = new Tiles(
     [
       "===============================",
-      "=..................============",
+      "=.................=============",
       "=..==.===.===u===..============",
-      "=.=..=...=..=...=..============",
-      "=.===.=.===.===.===.===========",
-      "=...=.=.=.....=...=.===========",
-      "===.=.=.=====.===.=.===========",
-      "=.....=.......=...=.===========",
-      "=.===.===.===.=.===.===========",
-      "=.=..=...=..=.u=..=.===========",
-      "=.===.=.===.===.=.=.===u=======",
-      "=..................============",
-      "===============================",
-      "===============================",
+      "=.===.=...=.=...=...===.=======",
+      "=.....=.===.=.===.=.===.......=",
+      "=.===.===.===.=.===.===.=======",
+      "=.=..=.=.=.....=...=.=.=..=..==",
+      "=.===.===.=====.===.===.===.===",
+      "=.===.=.........=.........=..==",
+      "=...=.=.===.===.=.===.===.===.=",
+      "=.===.=.===.=.===.===.=.===.===",
+      "=.....=...=.=.....=.=...=.....=",
+      "===.===.===.=======.===.===.===",
+      "=.................u..........==",
       "===============================",
     ],
     70,
     70,
-    bricks.w + 1,
-    bricks.h + 1
+    bricks.w + 0,
+    bricks.h + 0
   );
+
+  /*fog = createGraphics(width, height);
+  fog.background(127); // Fondo gris
+  fog.noStroke();*/
 }
 
 function draw() {
   background("gray");
+
   Game();
 }
 
@@ -71,6 +79,8 @@ function Game() {
     elementBullets();
     checkPowerUp();
     texto();
+    //dibujarElementos();
+
     player.visible = true;
     bricks.visible = true;
   } else {
@@ -131,7 +141,7 @@ function elementBullets() {
       lastShotTime1 = currentTime1;
     }
   }
-  if (mouseButton === RIGHT && elementoActual === "fuego" && hasPowerUp === "yes") {
+  if (mouseButton === RIGHT && elementoActual === "fuego" && hasPowerUp) {
     let currentTime2 = millis();
     if (currentTime2 - lastShotTime2 > shotDelay2) {
       // Verifica si ha pasado el retardo desde el último disparo
@@ -146,8 +156,7 @@ function elementBullets() {
         Canyon.remove();
       });
       lastShotTime2 = currentTime2;
-	  hasPowerUp = 'no';
-
+      hasPowerUp = false;
     }
   }
 }
@@ -156,7 +165,7 @@ function checkPowerUp() {
   player.collides(powerUP, (player, powerUP) => {
     powerUP.remove();
     powerUP.tile = ".";
-    hasPowerUp = "yes";
+    hasPowerUp = true;
   });
 }
 
@@ -164,5 +173,18 @@ function texto() {
   fill(255);
   textAlign(CENTER, CENTER);
   textSize(20);
-  text("habilidad = " + hasPowerUp, width / 1.5, height / 19);
+  text("habilidad = " + (hasPowerUp ? "Sí" : "No"), width / 1.5, height / 19);
 }
+
+/*function dibujarElementos() {
+  // Dibujar el laberinto
+  for (let brick of bricks) {
+    fill(0);
+    rect(brick.x, brick.y, brick.width, brick.height);
+  }
+
+  // Dibujar elementos visibles dentro del radio de visión
+  fill(255);
+  ellipse(player.x, player.y, radioVision * 5);
+}*/
+
