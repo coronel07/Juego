@@ -1,19 +1,19 @@
-let player;
+let player, ui;
 let elementoActual = "";
-let bricks, tilesGroup;
 let juegoIniciado = true;
-let lastShotTime1 = 0;
-let lastShotTime2 = 0;
-let shotDelay1 = 700;
-let shotDelay2 = 3000;
-let powerUP;
-let hasPowerUp = false;
+let backgroundImage;
 //let radioVision = 30;
 //let fog;
+
+function preload() {
+  backgroundImage = loadImage('map.png');
+}
 
 function setup() {
   createCanvas(windowWidth - 4, windowHeight - 4);
 
+  //paredes
+  
   // Jugador
   player = new Sprite(100, 90);
   player.diameter = 30;
@@ -22,12 +22,18 @@ function setup() {
   player.visible = false;
   player.friction = 0;
 
+  /*ui = new Group();
+  for (let i = 0; i < 1; i++) {
+    new ui.Sprite(100 + i * 40, 115, 35, 10,'s');
+  }
+  camera.zoom = 1;*/
+
   // Laberinto
   bricks = new Group();
   bricks.color = "black";
   bricks.collider = "static";
-  bricks.w = 40;
-  bricks.h = 40;
+  bricks.w = 20;
+  bricks.h = 20;
   bricks.tile = "=";
   bricks.visible = false;
 
@@ -36,39 +42,59 @@ function setup() {
   powerUP.tile = "u";
   powerUP.diameter = 20;
 
+  portal1 = new Group()
+  portal1.color = 'green'
+  portal1.w = 40;
+  portal1.h = 20;
+  portal1.tile = 'p'
+
 
   tilesGroup = new Tiles(
     [
-      "===============================",
-      "=.................=============",
-      "=..==.===.===u===..============",
-      "=.===.=...=.=...=...===.=======",
-      "=.....=.===.=.===.=.===.......=",
-      "=.===.===.===.=.===.===.=======",
-      "=.=..=.=.=.....=...=.=.=..=..==",
-      "=.===.===.=====.===.===.===.===",
-      "=.===.=.........=.........=..==",
-      "=...=.=.===.===.=.===.===.===.=",
-      "=.===.=.===.=.===.===.=.===.===",
-      "=.....=...=.=.....=.=...=.....=",
-      "===.===.===.=======.===.===.===",
-      "=.................u..........==",
-      "===============================",
+      "============================p.============================",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "=........................................................=",
+      "==========================================================",
     ],
-    70,
-    70,
+    67,
+    67,
     bricks.w + 0,
     bricks.h + 0
   );
-
-  /*fog = createGraphics(width, height);
-  fog.background(127); // Fondo gris
-  fog.noStroke();*/
 }
 
 function draw() {
   background("gray");
 
+  let padding = 50;
+  let juegoRectAncho = width - 2 * padding;
+  let juegoRectAlto = height - 2 * padding;
+  let juegoRectX = padding;
+  let juegoRectY = padding;
+  fill("lightgray") // Puedes cambiar "lightgray" al color que prefieras
+  rect(juegoRectX, juegoRectY, juegoRectAncho, juegoRectAlto);
+
+  
   Game();
 }
 
@@ -76,13 +102,9 @@ function Game() {
   if (juegoIniciado) {
     movePlayer();
     elementControl();
-    elementBullets();
-    checkPowerUp();
-    texto();
     //dibujarElementos();
-
+    bricks.visible = true
     player.visible = true;
-    bricks.visible = true;
   } else {
     clear();
     fill(0);
@@ -97,6 +119,13 @@ function Game() {
 }
 
 function movePlayer() {
+  /*camera.on();
+	player.moveTowards(mouse, 0.01);
+	player.draw();
+	camera.x = player.x;
+	camera.y = player.y;
+
+	camera.off();*/
   player.vel.set(0, 0);
 
   if (kb.pressing("left")) player.vel.x = -3;
@@ -104,6 +133,7 @@ function movePlayer() {
 
   if (kb.pressing("up")) player.vel.y = -3;
   else if (kb.pressing("down")) player.vel.y = 3;
+
 }
 
 function elementControl() {
@@ -121,59 +151,6 @@ function elementControl() {
     elementoActual = "viento";
     player.color = "gray";
   }
-}
-
-function elementBullets() {
-  if (mouse.presses() && elementoActual === "fuego") {
-    let currentTime1 = millis();
-    if (currentTime1 - lastShotTime1 > shotDelay1) {
-      // Verifica si ha pasado el retardo desde el último disparo
-      let bullet = new Sprite(player.x, player.y);
-      bullet.diameter = 10;
-      let angle = atan2(mouseY - player.y, mouseX - player.x);
-      let speed = 5;
-      bullet.vel.x = cos(angle) * speed;
-      bullet.vel.y = sin(angle) * speed;
-      bullet.color = "orange";
-      bullet.collides(bricks, (bullet, brick) => {
-        bullet.remove();
-      });
-      lastShotTime1 = currentTime1;
-    }
-  }
-  if (mouseButton === RIGHT && elementoActual === "fuego" && hasPowerUp) {
-    let currentTime2 = millis();
-    if (currentTime2 - lastShotTime2 > shotDelay2) {
-      // Verifica si ha pasado el retardo desde el último disparo
-      let Canyon = new Sprite(player.x, player.y);
-      Canyon.diameter = 25;
-      let angle = atan2(mouseY - player.y, mouseX - player.x);
-      let speed = 5;
-      Canyon.vel.x = cos(angle) * speed;
-      Canyon.vel.y = sin(angle) * speed;
-      Canyon.color = "blue";
-      Canyon.collides(bricks, (Canyon, brick) => {
-        Canyon.remove();
-      });
-      lastShotTime2 = currentTime2;
-      hasPowerUp = false;
-    }
-  }
-}
-
-function checkPowerUp() {
-  player.collides(powerUP, (player, powerUP) => {
-    powerUP.remove();
-    powerUP.tile = ".";
-    hasPowerUp = true;
-  });
-}
-
-function texto() {
-  fill(255);
-  textAlign(CENTER, CENTER);
-  textSize(20);
-  text("habilidad = " + (hasPowerUp ? "Sí" : "No"), width / 1.5, height / 19);
 }
 
 /*function dibujarElementos() {
