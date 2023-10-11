@@ -7,12 +7,21 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(200, 160, 'pixelated');
+  createCanvas(400, 260, 'pixelated');
 
   world.gravity.y = 10;
   allSprites.pixelPerfect = true;
 
+  walls = new Group();
+  walls.color = 'black'
+  walls.h = 15
+  walls.w = 15
+  walls.layer = 0;
+  walls.collider = 'static';
+  walls.tile = '=';
+
   grass = new Group();
+  grass.color = 'green'
   grass.h = 15
   grass.w = 15
   grass.layer = 0;
@@ -20,6 +29,7 @@ function setup() {
   grass.tile = 'g';
 
   water = new Group();
+  water.color = 'blue'
   water.h = 15
   water.w = 15
   water.layer = 2;
@@ -28,6 +38,7 @@ function setup() {
   water.tile = 'w';
 
   coins = new Group();
+  coins.color = 'yellow'
   coins.h = 5
   coins.w = 5
   coins.collider = 'static';
@@ -35,25 +46,27 @@ function setup() {
 
   new Tiles(
     [
-      'cc',
-      'gg                                     g',
-      ' ',
-      '   gg',
-      '       c                        c  g',
-      '      ggg    c                  g',
-      '            ggg             g                 ccc',
-      '                                              ccc',
-      '     c c c       c c                          ccc',
-      'gggggggggggwwwwwggggg  ggggggggggg            ggg'
+      '=    cc                                                                                                                                                                     ',
+      '=    gg                                     g                                                                                            ',
+      '=                                                                                                                                      ',
+      ' =       gg                                                                                                                          ',
+      ' =          c                        c  g                                                                        ',
+      ' =         ggg    c                  g                                           ggggg                                                      ',
+      '=                ggg             g                 ccc                           g   g                                                                            ',
+      '=                                                  ccc                      gggggg   g                                                ',
+      '=         c c c       c c                          ccc              ggg              g                                                   ',
+      ' gggggggggggggggwwwwwggggg  ggggggggggg            ggg       ggg                     g                               ',
+      ' gggggggggggggggwwwwwggggg  ggggggggggg            ggg       ggg                     g                               ',
+      ' gggggggggggggggwwwwwggggg  ggggggggggg            ggg       ggg                     g                               ',
+    
     ],
-    8,
-    8,
+    0,
+    60,
     16,
     16
   );
 
-  player = new Sprite(48, 100, 12, 12);
-  player.layer = 1;
+  player = new Sprite(50, 150, 12, 20);
   player.rotationLock = true;
   player.friction = 0;
   player.color = 'white'
@@ -94,11 +107,21 @@ function Game() {
 }
 
 function movePlayer() {
-  if (kb.presses('up') || kb.presses('space')) {
-
-    player.vel.y = -4.5;
+  if (player.colliding(grass)) {
+    if (kb.presses('up') || kb.presses('space')) {
+      player.vel.y = -4.5;
+    }
   }
-
+  if (player.colliding(water)) {
+    if (kb.presses('up') || kb.presses('space')) {
+      player.vel.y = -2.5;
+    }
+  }
+  if (elementoActual === "viento") {
+    if (kb.presses('up') || kb.presses('space')) {
+      player.vel.y = -4.5;
+    }
+  }
   if (kb.pressing('left')) {
     player.vel.x = -1.5;
     player.mirror.x = true;
