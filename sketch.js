@@ -1,110 +1,85 @@
-let player, ui;
+let player, grass, water, coins;
 let elementoActual = "";
 let juegoIniciado = true;
-let backgroundImage;
-//let radioVision = 30;
-//let fog;
+let score = 0;
 
 function preload() {
-  backgroundImage = loadImage('map.png');
 }
 
 function setup() {
-  createCanvas(windowWidth - 4, windowHeight - 4);
+  createCanvas(200, 160, 'pixelated');
 
-  //paredes
-  
-  // Jugador
-  player = new Sprite(100, 90);
-  player.diameter = 30;
-  player.color = "white";
-  player.rotationLock = true;
-  player.visible = false;
-  player.friction = 0;
+  world.gravity.y = 10;
+  allSprites.pixelPerfect = true;
 
-  /*ui = new Group();
-  for (let i = 0; i < 1; i++) {
-    new ui.Sprite(100 + i * 40, 115, 35, 10,'s');
-  }
-  camera.zoom = 1;*/
+  grass = new Group();
+  grass.h = 15
+  grass.w = 15
+  grass.layer = 0;
+  grass.collider = 'static';
+  grass.tile = 'g';
 
-  // Laberinto
-  bricks = new Group();
-  bricks.color = "black";
-  bricks.collider = "static";
-  bricks.w = 20;
-  bricks.h = 20;
-  bricks.tile = "=";
-  bricks.visible = false;
+  water = new Group();
+  water.h = 15
+  water.w = 15
+  water.layer = 2;
+  water.collider = 'static';
+  water.h = 8;
+  water.tile = 'w';
 
-  powerUP = new Group();
-  powerUP.color = "yellow";
-  powerUP.tile = "u";
-  powerUP.diameter = 20;
+  coins = new Group();
+  coins.h = 5
+  coins.w = 5
+  coins.collider = 'static';
+  coins.tile = 'c';
 
-  portal1 = new Group()
-  portal1.color = 'green'
-  portal1.w = 40;
-  portal1.h = 20;
-  portal1.tile = 'p'
-
-
-  tilesGroup = new Tiles(
+  new Tiles(
     [
-      "============================p.============================",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "=........................................................=",
-      "==========================================================",
+      'cc',
+      'gg                                     g',
+      ' ',
+      '   gg',
+      '       c                        c  g',
+      '      ggg    c                  g',
+      '            ggg             g                 ccc',
+      '                                              ccc',
+      '     c c c       c c                          ccc',
+      'gggggggggggwwwwwggggg  ggggggggggg            ggg'
     ],
-    67,
-    67,
-    bricks.w + 0,
-    bricks.h + 0
+    8,
+    8,
+    16,
+    16
   );
+
+  player = new Sprite(48, 100, 12, 12);
+  player.layer = 1;
+  player.rotationLock = true;
+  player.friction = 0;
+  player.color = 'white'
+  player.overlaps(coins, collectCoin);
+  textAlign(CENTER);
+
+}
+
+function collectCoin(player, coin) {
+  coin.remove();
+  score++;
 }
 
 function draw() {
-  background("gray");
-
-  let padding = 50;
-  let juegoRectAncho = width - 2 * padding;
-  let juegoRectAlto = height - 2 * padding;
-  let juegoRectX = padding;
-  let juegoRectY = padding;
-  fill("lightgray") // Puedes cambiar "lightgray" al color que prefieras
-  rect(juegoRectX, juegoRectY, juegoRectAncho, juegoRectAlto);
-
-  
-  Game();
+  background('skyblue');
+  fill(255);
+  text('Score: ' + score, 160, 20);
+  camera.x = player.x + 52;
+  elementControl()
+  movePlayer()
 }
 
 function Game() {
   if (juegoIniciado) {
     movePlayer();
     elementControl();
-    //dibujarElementos();
-    bricks.visible = true
-    player.visible = true;
   } else {
     clear();
     fill(0);
@@ -119,20 +94,26 @@ function Game() {
 }
 
 function movePlayer() {
-  /*camera.on();
-	player.moveTowards(mouse, 0.01);
-	player.draw();
-	camera.x = player.x;
-	camera.y = player.y;
+  if (kb.presses('up') || kb.presses('space')) {
 
-	camera.off();*/
-  player.vel.set(0, 0);
+    player.vel.y = -4.5;
+  }
 
-  if (kb.pressing("left")) player.vel.x = -3;
-  else if (kb.pressing("right")) player.vel.x = 3;
+  if (kb.pressing('left')) {
+    player.vel.x = -1.5;
+    player.mirror.x = true;
+  } else if (kb.pressing('right')) {
+    player.vel.x = 1.5;
+    player.mirror.x = false;
+  } else {
+    player.vel.x = 0;
+  }
 
-  if (kb.pressing("up")) player.vel.y = -3;
-  else if (kb.pressing("down")) player.vel.y = 3;
+  if (player.y > 400) {
+    player.speed = 0;
+    player.x = 48;
+    player.y = 100;
+  }
 
 }
 
@@ -152,16 +133,3 @@ function elementControl() {
     player.color = "gray";
   }
 }
-
-/*function dibujarElementos() {
-  // Dibujar el laberinto
-  for (let brick of bricks) {
-    fill(0);
-    rect(brick.x, brick.y, brick.width, brick.height);
-  }
-
-  // Dibujar elementos visibles dentro del radio de visión
-  fill(255);
-  ellipse(player.x, player.y, radioVision * 5);
-}*/
-
