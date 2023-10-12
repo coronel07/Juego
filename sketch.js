@@ -2,6 +2,7 @@ let player, grass, water, coins;
 let elementoActual = "";
 let juegoIniciado = true;
 let score = 0;
+let enemies = [];
 
 function preload() {
 }
@@ -73,7 +74,29 @@ function setup() {
   player.overlaps(coins, collectCoin);
   textAlign(CENTER);
 
+  for (let i = 0; i < 5; i++) {
+    let enemy = new Enemy(random(width), random(height), 2); // Valores de posición y velocidad a elección
+    enemies.push(enemy);
+  }
+
 }
+
+class Enemy {
+  constructor(x, y, speed) {
+    this.sprite = createSprite(x, y, 20, 20); 
+    this.speed = speed; 
+  }
+
+  update(player) {
+    
+    let direction = createVector(player.position.x - this.sprite.position.x, player.position.y - this.sprite.position.y);
+    direction.normalize();
+    direction.mult(this.speed);
+    this.sprite.velocity.x = direction.x;
+    this.sprite.velocity.y = direction.y;
+  }
+}
+
 
 function collectCoin(player, coin) {
   coin.remove();
@@ -87,6 +110,11 @@ function draw() {
   camera.x = player.x + 52;
   elementControl()
   movePlayer()
+
+  for (let enemy of enemies) {
+    enemy.update(player); 
+  }
+
 }
 
 function Game() {
