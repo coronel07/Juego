@@ -9,10 +9,15 @@ let saltosRealizados = 0;
 let enemies = [];
 let bg
 let BandaSonora;
+let efectoSalto;
+let efectoCaminar;
+
 
 function preload() {
   bg = loadImage('assets/bg.png');
   BandaSonora = loadSound('./assets/NinjaNoseCuanto.mp3');
+  efectoSaltar = loadSound('./assets/salto.wav');
+  //efectoCaminar = loadSound('./assets/caminar.wav')
 }
 
 function setup() {
@@ -233,15 +238,18 @@ function movePlayer() {
     groundSensor.overlapping(water)) {
     if (kb.presses('up') || kb.presses('space')) {
       player.vel.y = -4.5;
+      efectoSaltar.play()
     }
   }
 
   if (kb.pressing("left")) {
     player.vel.x = -2;
     player.mirror.x = true;
+    //efectoCaminar.play();
   } else if (kb.pressing("right")) {
     player.vel.x = 2;
     player.mirror.x = false;
+    //efectoCaminar.play();
   } else {
     player.vel.x = 0;
   }
@@ -251,6 +259,8 @@ function movePlayer() {
     player.x = 48;
     player.y = 100;
   }
+
+
 }
 
 function elementMove() {
