@@ -12,7 +12,7 @@ let BandaSonora;
 
 function preload() {
   bg = loadImage('assets/bg.png');
-  BandaSonora = loadSound('/NinjaNoseCuanto.mp3');
+  BandaSonora = loadSound('./assets/NinjaNoseCuanto.mp3');
 }
 
 function setup() {
