@@ -8,14 +8,18 @@ let live = 3
 let saltosRealizados = 0;
 let enemies = [];
 let bg
-
+let BandaSonora;
 
 function preload() {
   bg = loadImage('assets/bg.png');
+  BandaSonora = loadSound('/piririn.mp3');
 }
 
 function setup() {
   createCanvas(600, 300, "pixelated");
+
+  BandaSonora.setVolume(0.5); // Ajusta el volumen (opcional)
+  BandaSonora.loop();
 
   world.gravity.y = 10;
   allSprites.pixelPerfect = true;
@@ -328,4 +332,14 @@ function elementBullets() {
     door.rotation = 90
   });
 }
+}
+
+function keyPressed() {
+  if (key === 'm' || key === 'M') {
+    if (BandaSonora.isPlaying()) {
+      BandaSonora.pause();
+    } else {
+      BandaSonora.play();
+    }
+  }
 }
