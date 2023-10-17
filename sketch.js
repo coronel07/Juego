@@ -12,13 +12,13 @@ let BandaSonora;
 
 function preload() {
   bg = loadImage('assets/bg.png');
-  BandaSonora = loadSound('/piririn.mp3');
+  BandaSonora = loadSound('/NinjaNoseCuanto.mp3');
 }
 
 function setup() {
   createCanvas(600, 300, "pixelated");
 
-  BandaSonora.setVolume(0.5); // Ajusta el volumen (opcional)
+  BandaSonora.setVolume(0.5); 
   BandaSonora.loop();
 
   world.gravity.y = 10;
