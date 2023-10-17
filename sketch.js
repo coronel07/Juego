@@ -4,12 +4,14 @@ let juegoIniciado = true;
 let powerUP;
 let hasPowerUp = false;
 let score = 0;
+let live = 3
 let saltosRealizados = 0;
 let enemies = [];
+let bg
 
 
 function preload() {
-
+  bg = loadImage('assets/bg.png');
 }
 
 function setup() {
@@ -27,7 +29,9 @@ function setup() {
   walls.tile = "=";
 
   grass = new Group();
+
   grass.color = "green";
+  //grass.img = 'assets/pared.png';
   grass.h = 15;
   grass.w = 15;
   grass.layer = 0;
@@ -89,7 +93,13 @@ function setup() {
   player.tile = "v";
   player.overlaps(coins, collectCoin);
 
+  //espada = new Sprite(309,140,2,25);
+  //espada.rotation = 0
+
+  //j = new GlueJoint(player, espada);
   
+
+
   portal = new Sprite();
   portal.w = 2;
   portal.h = 28;
@@ -99,29 +109,29 @@ function setup() {
 
   level1 = new Tiles(
     [
-      "..g.................................................................................................g.......gggggggggggg",
-      "..g.................................................................................................g.....gg............",
-      "..g.................................................................................................g.gggg..............",
-      "..g.................................................................................................gg..................",
-      "...g................................................................................................gg..................",
-      "...g....................................................................................................................",
-      "...g.............................................................................................................ggggggg",
-      "...g..........................................................................................................ggg.......",
-      "....g.........................................................................................................g.........",
-      "....g.........................................................................................................gg........",
-      "....g...........................................................................................................g.......",
-      ".....ggg..............................................................................................gggg......g.......",
-      "......gg..............................................................................................g..g.......g......",
-      ".....g................................................................................................g..g.......g......",
-      ".....g..............................................................................................gg....g.......gggggg",
-      ".....g.............................................................gg...................ggggppppppppg.....g........bbbbb",
-      "....g....................................................ggg.......gg...................g..g........g.....g........bb...",
-      "....g....................................................g..gggg...gg.....gggggggggg....g..g........g.....g........bb...",
-      "....g...........................................gggggg...g.....g...g.g....g........g....g..g........g.....g......ggggggg",
-      "....g..........v................................g....g...g....g....g.g...g.........gxxxxg..g.........g....g......g......",
-      ".....ggwwwwwgggggggggggggggggggggggggggggggggggg.....g..g.....g....g.g...ggg...............g..........g...g.......g.....",
-      ".......gwwwg.........................................g..g.....g....g.g......g.............g...........g...g........g....",
-      "........ggg.........................................gxxxg.....gxxxxg.gxxx...g.............gxxxxxxxxxxxg...gxxxxxxxxg....",
+      "  g                                                                                                                     ",
+      "  g                                                                                                                     ",
+      "  g                                                                                                                     ",
+      "  g                                                                                                                     ",
+      "   g                                                                                                                    ",
+      "   g                                                                                                                    ",
+      "   g                                                                                                             ggggggg",
+      "   g                                                                                                         gggg       ",
+      "    g                                                                                                       g  g        ",
+      "    g                                                                                                         gg        ",
+      "    gu                                                                                                          g       ",
+      "     ggg                                                                                              gggg      g       ",
+      "      gg                                                                                              g  g       g      ",
+      "     g                                                                                                g  g       g      ",
+      "     g                                                                                              gg    g       gggggg",
+      "     g                                                             gg                   ggggppppppppg     g        bbbbb                                         ",
+      "    g                                                    ggg       gg                   g  g        g     g        bb                                      gggggg      ",
+      "    g                                                    g  gggg   gg     gggggggggg    g  g        g     g        bb                            ggggg                  ggggggg   ", 
+      "    g                                           gggggg   g     g   g g    g        g    g  g        g     g      gggggggggggg       ggggg                                                  gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",       
+      "    g          v                                g    g   g    g    g g   g         gxxxxg  g         g    g      g      ",
+      "     ggwwwwwgggggggggggggggggggggggggggggggggggg     g  g     g    g g   ggg               g          g   g       g     ",
+      "       gwwwg                                         g  g     g    g g      g             g           g   g        g    ",
+      "        ggg                                         g   g     g    g g      g             g           g   g        g    ",
     ],
     -180,
     -70,
@@ -129,8 +139,9 @@ function setup() {
     16
   );
 
-  groundSensor = new Sprite(60, 250, 6, 20);
-  groundSensor.visible = false;
+
+  groundSensor = new Sprite(60, 250 , 6, 20);
+  //groundSensor.visible = false;
   groundSensor.mass = 0.01;
   groundSensor.overlaps(allSprites);
 
@@ -168,7 +179,7 @@ function collectCoin(player, coin) {
 }
 
 function draw() {
-  background("grey");
+  background('gray');
   Game();
 }
 
@@ -177,14 +188,14 @@ function Game() {
     fill(0);
     text("Score: " + score, 530, 20);
     fill(0);
-    text("Live: " + score, 530, 40);
+    text("Live: " + live, 530, 40);
     camera.x = player.x - (-100);
     elementControl();
-    elementBullets();
+    elementBullets()
     checkPowerUp();
     movePlayer();
-    elementMove() 
-    
+    elementMove()
+
   } else {
     clear();
     fill(0);
@@ -198,16 +209,7 @@ function Game() {
   }
 }
 
-
 function movePlayer() {
-  player.vel.set(0, 0);
-  if (kb.pressing("left")) player.vel.x = -9;
-  else if (kb.pressing("right")) player.vel.x = 9;
-  if (kb.pressing("up")) player.vel.y = -4;
-  else if (kb.pressing("down")) player.vel.y = 4;
-}
-
-function movePlayer1() {
   if (groundSensor.overlapping(water)) {
     player.drag = 20;
     player.friction = 10;
@@ -254,14 +256,8 @@ function elementMove() {
   }
 
   for (let enemy of enemies) {
-    enemy.update(player); 
+    enemy.update(player);
   }
-}
-
-function elementBullets() {
-
-
-
 }
 
 function checkPowerUp() {
@@ -287,4 +283,9 @@ function elementControl() {
     elementoActual = "viento";
     player.img = 'assets/ninjaviento.png';
   }
+}
+
+
+function elementBullets() {
+  
 }
