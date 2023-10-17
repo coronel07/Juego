@@ -31,7 +31,7 @@ function setup() {
   grass = new Group();
 
   grass.color = "green";
-  //grass.img = 'assets/pared.png';
+  grass.img = 'assets/pared.png';
   grass.h = 15;
   grass.w = 15;
   grass.layer = 0;
@@ -41,10 +41,11 @@ function setup() {
   water = new Group();
   water.layer = 2;
   water.color = "blue";
-  water.h = 15;
-  water.w = 15;
-  water.collider = "static";
+  water.h = 18;
+  water.w = 18;
+  water.collider = "none";
   water.tile = "w";
+  water.layer = 1;
 
   coins = new Group();
   coins.color = "yellow";
@@ -86,26 +87,23 @@ function setup() {
   player = new Sprite();
   player.w = 12;
   player.h = 28;
-  player.img = 'assets/ninjanormal.png';
+  //player.img = 'assets/ninjanormal.png';
   player.rotationLock = true;
   player.friction = 0;
   player.layer = 1;
   player.tile = "v";
   player.overlaps(coins, collectCoin);
-
-  //espada = new Sprite(309,140,2,25);
-  //espada.rotation = 0
-
-  //j = new GlueJoint(player, espada);
-  
+  player.layer = 2;
 
 
-  portal = new Sprite();
-  portal.w = 2;
-  portal.h = 28;
-  portal.visible = true;
-  portal.collider = 'static'
-  portal.tile = "u";
+
+
+  door = new Group();
+  door.w = 2;
+  door.h = 100;
+  door.visible = true;
+  door.collider = 'static'
+  door.tile = "u";
 
   level1 = new Tiles(
     [
@@ -117,18 +115,18 @@ function setup() {
       "   g                                                                                                                    ",
       "   g                                                                                                             ggggggg",
       "   g                                                                                                         gggg       ",
-      "    g                                                                                                       g  g        ",
-      "    g                                                                                                         gg        ",
-      "    gu                                                                                                          g       ",
-      "     ggg                                                                                              gggg      g       ",
-      "      gg                                                                                              g  g       g      ",
-      "     g                                                                                                g  g       g      ",
-      "     g                                                                                              gg    g       gggggg",
-      "     g                                                             gg                   ggggppppppppg     g        bbbbb                                         ",
-      "    g                                                    ggg       gg                   g  g        g     g        bb                                      gggggg      ",
-      "    g                                                    g  gggg   gg     gggggggggg    g  g        g     g        bb                            ggggg                  ggggggg   ", 
-      "    g                                           gggggg   g     g   g g    g        g    g  g        g     g      gggggggggggg       ggggg                                                  gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",       
-      "    g          v                                g    g   g    g    g g   g         gxxxxg  g         g    g      g      ",
+      "    g                                                                                                       g  g                                                                                                           g                                                                                                                                      ",
+      "    g                                                                                                         gg                                                                                                           g                                                                                g                                                      ",
+      "    g                                                                                                          g                                                                                                           g                                                       gggggggggggggggggggggggggug                                                                              ",
+      "     ggg                                                                                              gggg      g                                                                                                gwwwwwwwwwg                                               ggggggggg                                                                                      ",
+      "      gg                                                                                              g  g       g                                                                                     gggg      gwwwwwwwwwg                                         ggggggggg                                                                                                 ",
+      "     g                                                                                                g  g       g                                                                                               gwwwwwwwwwggggggggggggggggggggggggggggggggggggggggggggg                                                                                                                                                                         ",
+      "     g                                                                                              gg    g       gggggg                                                                        gggg             gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                    ggggggggggggggggggggggggg                gggggggggg            g                                          g         ",
+      "     g                                                             gg                   ggggppppppppg     g        bbbbb                                                                                         gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwggggggggggggggg                                                              g                                          g              ",
+      "    g                                                    ggg       gg                   g  g        g     g        bb                                      gggggg                     ggggg                      gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwgggggggggg                                                                        g                                          g                 ",
+      "    g                                                    g  gggg   gg     gggggggggg    g  g        g     g        bb                            ggggg                  ggggggg                                  ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg                                                                           gggggggggggggggggggggggggggggggggggggggggggg                                                                                                                             ",
+      "    g                                           gggggg   g     g   g g    g        g    g  g        g     g      gggggggggggg       ggggg                                                                                                                                                                                                                                                                                            ",
+      "    g          v                                g    g   g    g    g g   g         g    g  g         g    g      g      ",
       "     ggwwwwwgggggggggggggggggggggggggggggggggggg     g  g     g    g g   ggg               g          g   g       g     ",
       "       gwwwg                                         g  g     g    g g      g             g           g   g        g    ",
       "        ggg                                         g   g     g    g g      g             g           g   g        g    ",
@@ -139,9 +137,9 @@ function setup() {
     16
   );
 
-
-  groundSensor = new Sprite(60, 250 , 6, 20);
-  //groundSensor.visible = false;
+  
+  groundSensor = new Sprite(60, 250, 6, 20);
+  groundSensor.visible = false;
   groundSensor.mass = 0.01;
   groundSensor.overlaps(allSprites);
 
@@ -209,6 +207,15 @@ function Game() {
   }
 }
 
+function movePlayer1() {
+  if (kb.pressing('left')) player.vel.x = -10;
+  else if (kb.pressing('right')) player.vel.x = 10;
+  else player.vel.x = 0;
+  if (kb.pressing('up')) player.vel.y = -5;
+  else if (kb.pressing('down')) player.vel.y = 5;
+  else player.vel.y = 0;
+
+}
 function movePlayer() {
   if (groundSensor.overlapping(water)) {
     player.drag = 20;
@@ -285,7 +292,40 @@ function elementControl() {
   }
 }
 
-
 function elementBullets() {
-  
+  if (mouse.presses() && elementoActual === "fuego") {
+      let bullet = new Sprite(player.x, player.y);
+    bullet.diameter = 8;
+    let angle = atan2(mouseY - player.y, mouseX - player.x);
+    let speedx = 10;
+    let speedy = 5;
+    bullet.vel.x = cos(angle) * speedx;
+    bullet.vel.y = sin(angle) * speedy;
+    bullet.color = "orange";
+    bullet.collides(grass, (bullet, grass) => {
+      bullet.remove();
+    })
+    bullet.collides(logs, (bullet, logs) => {
+      bullet.remove();
+      logs.remove()
+    });
+  }
+
+  if (mouse.presses() && elementoActual === "electrico") {
+    let bullet = new Sprite(player.x, player.y);
+  bullet.h = 2;
+  bullet.w = 10;
+  let angle = atan2(mouseY - player.y, mouseX - player.x);
+  let speed = 10;
+  bullet.vel.x = cos(angle) * speed;
+  bullet.vel.y = sin(angle) * speed;
+  bullet.color = "yellow";
+  bullet.collides(grass, (bullet, grass) => {
+    bullet.remove();
+  });
+  bullet.collides(door, (bullet, door) => {
+    bullet.remove();
+    door.rotation = 90
+  });
+}
 }
