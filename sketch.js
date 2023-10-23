@@ -16,7 +16,7 @@ let x = 0;
 
 
 function preload() {
-  bg = loadImage('assets/bg.png');
+
   BandaSonora = loadSound('./assets/NinjaNoseCuanto.mp3');
   efectoSaltar = loadSound('./assets/salto.wav');
   //efectoCaminar = loadSound('./assets/caminar.wav')
@@ -98,7 +98,7 @@ function setup() {
   player = new Sprite();
   player.w = 12;
   player.h = 28;
-  player.img = 'assets/marionormal.png';
+  //player.img = 'assets/ninjanormal.png';
   player.rotationLock = true;
   player.friction = 0;
   player.layer = 1;
@@ -167,7 +167,7 @@ function setup() {
 
 
   //Enemigos
-  /*
+  
   for (let i = 0; i < 1; i++) {
     let enemy = new Enemy(1,150, 2); 
     enemies.push(enemy);
@@ -187,7 +187,7 @@ class Enemy {
     direction.mult(this.speed);
     this.sprite.velocity.x = direction.x;
     this.sprite.velocity.y = direction.y;
-  }*/
+  }
 
 }
 
@@ -197,7 +197,7 @@ function collectCoin(player, coin) {
 }
 
 function draw() {
-  background(bg)
+  background('black')
   Game();
 }
 
@@ -306,16 +306,16 @@ function elementControl() {
   // Cambiar el elemento del sprite según las teclas presionadas
   if (kb.pressing("o")) {
     elementoActual = "agua";
-    player.img = 'assets/marioagua.png';
+    player.img = 'assets/ninjaagua.png';
   } else if (kb.pressing("l")) {
     elementoActual = "fuego";
-    player.img = 'assets/mariofuego.png';
+    player.img = 'assets/ninjafuego.png';
   } else if (kb.pressing("p")) {
     elementoActual = "electrico";
-    player.img = 'assets/marioelectrico.png';
+    player.img = 'assets/ninjaelectrico.png';
   } else if (kb.pressing("ñ")) {
     elementoActual = "viento";
-    player.img = 'assets/marioviento.png';
+    player.img = 'assets/ninjaviento.png';
   }
 }
 
