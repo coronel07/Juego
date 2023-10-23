@@ -1,4 +1,4 @@
-# Juego de Plataformas
+# 🕹️ Juego de Plataformas
 
 Este es un juego de plataformas simple desarrollado en p5.js. En el juego, controlas a un personaje que puede cambiar entre diferentes elementos y debe recolectar monedas mientras evita obstáculos y enemigos.
 
@@ -7,7 +7,7 @@ Este es un juego de plataformas simple desarrollado en p5.js. En el juego, contr
 - Controla a un personaje que puede cambiar entre diferentes elementos: agua, fuego, eléctrico y viento.
 - Recolecta monedas para aumentar tu puntuación.
 - Supera obstáculos y enemigos para avanzar en el juego.
-- Escucha una banda sonora en el fondo para una experiencia más inmersiva.
+- 🎵 Escucha una banda sonora en el fondo para una experiencia más inmersiva.
 - Puedes pausar y reanudar la banda sonora presionando la tecla "M".
 
 ## Controles
@@ -19,10 +19,10 @@ Este es un juego de plataformas simple desarrollado en p5.js. En el juego, contr
 
 ## Elementos del Juego
 
-- **Agua**: Permite al personaje moverse más fácilmente en agua.
-- **Fuego**: Permite disparar proyectiles de fuego.
-- **Eléctrico**: Permite disparar proyectiles eléctricos y activar interruptores eléctricos.
-- **Viento**: Permite realizar saltos más altos.
+- 💧 **Agua**: Permite al personaje moverse más fácilmente en agua.
+- 🔥 **Fuego**: Permite disparar proyectiles de fuego.
+- ⚡ **Eléctrico**: Permite disparar proyectiles eléctricos y activar interruptores eléctricos.
+- 🌬️ **Viento**: Permite realizar saltos más altos.
 
 ## Objetivos
 
@@ -30,10 +30,10 @@ El objetivo del juego es recolectar la mayor cantidad de monedas y avanzar lo m�
 
 ## Créditos
 
-- Codigo: Nicolas Coronel, Vicente Arhex
-- Sprites:Paul Michel
-- Música de fondo: [Alma del Filo - GabyCostilla](./assets/NinjaNoseCuanto.mp3)
-- Efectos de sonido: Gaby Costilla.
+- 🖥️ Codigo: Nicolas Coronel, Vicente Arhex
+- 🎨 Sprites: Paul Michel
+- 🎵 Música de fondo: [Alma del Filo - GabyCostilla](./assets/NinjaNoseCuanto.mp3)
+- 🔊 Efectos de sonido: Gaby Costilla.
 
 ## Requisitos
 
@@ -47,7 +47,6 @@ Asegúrate de tener [p5.js](https://p5js.org/) instalado para ejecutar el juego.
 
 ¡Diviértete jugando!
 
-
 ## Contribuciones
 
 Si deseas contribuir a este proyecto, siéntete libre de abrir problemas o enviar solicitudes de extracción en el repositorio.
@@ -57,7 +56,6 @@ Si deseas contribuir a este proyecto, siéntete libre de abrir problemas o envia
 Síguenos en Instagram para obtener las últimas actualizaciones y noticias:
 
 [![Instagram](https://img.shields.io/badge/Instagram-%40instituto_tecnico_renault-%23E4405F?style=for-the-badge&logo=instagram)](https://www.instagram.com/instituto_tecnico_renault/)
-
 
 ---
 
