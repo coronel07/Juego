@@ -24,7 +24,6 @@ function preload() {
 
 function setup() {
   createCanvas(600, 300, "pixelated");
-
   BandaSonora.setVolume(0.5);
   BandaSonora.loop();
 
@@ -198,7 +197,7 @@ function collectCoin(player, coin) {
 }
 
 function draw() {
-  background('gray')
+  background(bg)
   Game();
 }
 
