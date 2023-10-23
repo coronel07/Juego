@@ -203,9 +203,9 @@ function draw() {
 
 function Game() {
   if (juegoIniciado) {
-    fill(0);
+    fill(255);
     text("Score: " + score, 530, 20);
-    fill(0);
+    fill(255);
     text("Live: " + live, 530, 40);
     camera.x = player.x - (-100);
     elementControl();
