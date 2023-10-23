@@ -41,7 +41,7 @@ function setup() {
 
   grass = new Group();
   grass.color = "green";
-  //grass.img = 'assets/pared.png';
+  grass.img = 'assets/block.png';
   grass.h = 15;
   grass.w = 15;
   grass.layer = 0;
@@ -49,8 +49,8 @@ function setup() {
   grass.tile = "g";
 
   water = new Group();
+  water.img = 'assets/water.png';
   water.layer = 2;
-  water.color = "blue";
   water.h = 18;
   water.w = 18;
   water.collider = "none";
@@ -79,6 +79,7 @@ function setup() {
   deathBox.collider = "static";
 
   sands = new Group();
+  sands.img = 'assets/arena.png';
   sands.color = 'brown'
   sands.collider = "static";
   sands.w = 15;
@@ -88,6 +89,7 @@ function setup() {
   sands.broken = false;
 
   logs = new Group();
+  logs.img = 'assets/madera.png';
   logs.color = 'gray'
   logs.collider = "static";
   logs.w = 15;
@@ -97,7 +99,7 @@ function setup() {
   player = new Sprite();
   player.w = 12;
   player.h = 28;
-  player.img = 'assets/ninjanormal.png';
+  player.img = 'assets/marionormal.png';
   player.rotationLock = true;
   player.friction = 0;
   player.layer = 1;
@@ -111,34 +113,45 @@ function setup() {
   door.h = 100;
   door.visible = true;
   door.collider = 'static'
+  door.color = 'black'
   door.tile = "u";
+
+  //etiqueten a mamamelmonstruo
+
+  logs = new Group();
+  logs.layer = 2;
+  logs.color = "violet";
+  logs.h = 10;
+  logs.w = 10;
+  logs.collider = "static";
+  logs.tile = "h";
 
   level1 = new Tiles(
     [
       "  g                                                                                                                     ",
-      "  g                                                                                                                    g ",
-      "  g                                                                                                                  g   ",
-      "  g                                                                                                                    g ",
-      "   g                                                                                                                   g ",
-      "   g                                                                                                                 g   ",
-      "   g                                                                                                             ggggggg",
-      "   g                                                                                                         gggg       ",
-      "    g                                                                                                       g  g   c c                                                                                                       g                                                                                                                                      ",
-      "    g                                                                                                         gg c                                                                                                          g                                                                                g                                                      ",
-      "    g                                                                                                          g   c  c                                                                                                      g                                                       gggggggggggggggggggggggggug                                                                              ",
-      "     ggg                                                                                              gggg      g  c                                                                                              gwwwwwwwwwg                                               ggggggggg                                                                                      ",
-      "      gg                                                                                              g  g       g  c cc                                                                                  gggg      gwwwwwwwwwg                                         ggggggggg                                                                                                 ",
-      "     g                                                                                                g  g       g  c                                                                                             gwwwwwwwwwggggggggggggggggggggggggggggggggggggggggggggg                                                                                                                                                                         ",
-      "     g                                                                                              gg    g       gggggg                                     c                                  gggg             gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                    ggggggggggggggggggggggggg          gggggggggg         g                                          g         ",
-      "     g                                                             gg                   ggggppppppppg     g        bbbbb                                                                                         gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwggggggggggggggg                                                     g                                          g              ",
-      "    g                                                    ggg       gg                   g  g        g     g        bbccc                                   gggggg                     ggggg                      gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwgggggggggg                                                               g                                          g                 ",
-      "    g                                                    g  gggg   gg     gggggggggg    g  g        g     g        bbccc                         ggggg                  ggggggg                                  ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg                                                                  gggggggggggggggggggggggggggggggggggggggggggg                                                                                                                             ",
-      "    g                                           gggggg   g     g   g g    g        g    g  g        g     g      gggggggggggg       ggggg                                                                                                                                                                                                                                                                                            ",
-      "    g          v                                g    g   g    g    g g   g         g    g  g         g    g      g      ",
-      "     ggwwwwwgggggggggggggggggggggggggggggggggggg     g  g     g    g g   ggg               g          g   g       g     ",
-      "       gwwwg                                         g  g     g    g g      g             g           g   g        g    ",
-      "        ggg                                         g   g     g    g g      g             g           g   g        g    ",
-    ],
+      "  g                                                                                                                    g                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ",
+      "  g                                                                                                                  g                                                                                                                                                                                                                                               g         g                                                                                                                                                                                                                                                                                                                      ",
+      "  g                                                                                                                    g                                                                                                                                                                                                                                             g         g                                                                                                                                                                                                                                                                                                                      ",
+      "   g                                                                                                                   g                                                                                                                                                                                                                                             g         g                                                                                                                                                                                                                                                                                                                      ",
+      "   g                                                                                                                 g                                                                                                                                                                                                                                               g         g                                                                                                                                                                                                                                                                                                                      ",                                                                                   
+      "   g                                                                                                             ggggggg                                                                                                                                                                                                                                             ggggggggggggggg                                                gggggggggggggggggggggggggggg                                                                                                                                                                                                                                      ",
+      "   g                                                                                                         gggg                                                                                                                                                                                                                                                     bbccc         ggggggg                                  ggggggg                            gggg                                                                                                                                                                                                                                  ",
+      "    g                                                                                                       g  g   c c                                                                                                       g                                                                                                                                        bbccc       c        gggggg                      gggggg          c                            gggg                                                                                                                                                                                                                              ",
+      "    g                                                                                                         gg c                                                                                                          g                                                                                g                                                        bbccc                      gggggg          gggggg                                                  ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggguggggggg                                                                                                        ",
+      "    g                                                                                                          g   c  c                                                                                                      g                                                       gggggggggggggggggggggggggug                                                    ggggggggggggggggwwwwwwwwwwwwwwwwwwwggggggggggwwwwwwwwwwwwwwwwwwwgggggpppppppppppppppppgggggg                          hhh                              hhh                                  hhh                            gggggg                                                                                                  ",
+      "     ggg                                                                                              gggg      g  c                                                                                              gwwwwwwwwwg                                               ggggggggg                                                                                               gggggggwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwggggggg     ggggggggggggggggg     g                          h                                h                                    h                                   ggggg                                                                                             ",
+      "      gg                                                                                              g  g       g  c cc                                                                                  gggg      gwwwwwwwwwg                                         ggggggggg                                                                     ggggggggg                            ggggggwwwwwwwwwwwwwwwwwwwwwwgggggg                                  g                 c                      h                                      h                                h                                                                                                                    ",
+      "     g                                                                                                g  g       g  c                                                                                             gwwwwwwwwwggggggggggggggggggggggggggggggggggggggggggggg                                                                                                                        ggggggwwwwwwwwwwgggggg                                        g                                       hhh                                    hhh                              hhh                                                                                                                    ",
+      "     g                                                                                              gg    g       gggggg                                     c                                  gggg             gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                    ggggggggggggggggggggggggg          gggggggggg                                                      gggggggggg                                              g         gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggugg                               g                                          g                                  ",
+      "     g                                                             gg                   ggggppppppppg     g        bbbbb                                                                                         gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwggggggggggggggg                                                                                                                                                          g    c      wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                                   g                                          g                                  ",
+      "    g                                                    ggg       gg                   g  gggggggggg     g        bbccc                                   gggggg                     ggggg                      gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwgggggggggg                                                                                                                                                                    gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                                    g                                          g                                  ",
+      "    g                                                    g  gggg   gg     gggggggggg    g  g        g     g        bbccc                         ggggg                  ggggggg                                  ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg                                                                                                                                                                       gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                ggggggg             gggggggggggggggggggggggggggggggggggggggggggg                                  ",
+      "    g                                           gggggg   g     g   g g    g        g    g  g        g     g      gggggggggggg       ggggg                                                                                                                                                                                                                                                                                                                      gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww         ggggggg                                                                                                  ",
+      "    g          v                                g    g   g    g    g g   g         g    g  g         g    g      g                                                                                                                                                                                                                                                                                                                                             gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg                                                                                                         ",
+      "     ggwwwwwgggggggggggggggggggggggggggggggggggg     g  g     g    g g   ggg               g          g   g       g                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ",
+      "       gwwwg                                         g  g     g    g g      g             g           g   g        g                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ",
+      "        ggg                                         g   g     g    g g      g             g           g   g        g                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ",
+    ],                              
     -180,
     -70,
     16,
@@ -146,7 +159,7 @@ function setup() {
   );
 
 
-  groundSensor = new Sprite(60, 250, 6, 20);
+  groundSensor = new Sprite(56, 250, 1, 20);
   groundSensor.visible = false;
   groundSensor.mass = 0.01;
   groundSensor.overlaps(allSprites);
@@ -186,15 +199,6 @@ function collectCoin(player, coin) {
 
 function draw() {
   background('gray')
-  /*image(bg, x, 0, width, height);
-  image(bg, x + width, 0, width, height);
-
-  // Mueve el fondo hacia la derecha
-  x -= 1;
-  if (x < -width) {
-    x = 0;
-  }*/
-
   Game();
 }
 
@@ -211,7 +215,7 @@ function Game() {
     movePlayer();
     elementMove()
     keyPressed()
-
+    Loque()
   } else {
     clear();
     fill(0);
@@ -225,7 +229,7 @@ function Game() {
   }
 }
 
-function movePlayer1() {
+function movePlayer() {
   if (kb.pressing('left')) player.vel.x = -10;
   else if (kb.pressing('right')) player.vel.x = 10;
   else player.vel.x = 0;
@@ -234,7 +238,8 @@ function movePlayer1() {
   else player.vel.y = 0;
 
 }
-function movePlayer() {
+
+function movePlayer1() {
   if (groundSensor.overlapping(water)) {
     player.drag = 20;
     player.friction = 10;
@@ -302,16 +307,16 @@ function elementControl() {
   // Cambiar el elemento del sprite según las teclas presionadas
   if (kb.pressing("o")) {
     elementoActual = "agua";
-    player.img = 'assets/ninjaagua.png';
+    player.img = 'assets/marioagua.png';
   } else if (kb.pressing("l")) {
     elementoActual = "fuego";
-    player.img = 'assets/ninjafuego.png';
+    player.img = 'assets/mariofuego.png';
   } else if (kb.pressing("p")) {
     elementoActual = "electrico";
-    player.img = 'assets/ninjaelectrico.png';
+    player.img = 'assets/marioelectrico.png';
   } else if (kb.pressing("ñ")) {
     elementoActual = "viento";
-    player.img = 'assets/ninjaviento.png';
+    player.img = 'assets/marioviento.png';
   }
 }
 
@@ -364,5 +369,16 @@ function keyPressed() {
 }
 
 function Loque() {
-
+  if (groundSensor.overlapping(water)) {
+    if (elementoActual === "fuego" || elementoActual === "viento" || elementoActual === "electricoº") {
+      player.x = 50;
+      player.y = 220;
+    }
+  }
+  if (groundSensor.overlapping(grass)) {
+    if (elementoActual === "agua") {
+      player.x = 50;
+      player.y = 220;
+    }
+  }
 }
