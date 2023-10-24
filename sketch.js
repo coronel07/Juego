@@ -1,12 +1,11 @@
 let player, grass, water, coins, groundSensor;
 let elementoActual = "";
-let juegoIniciado = true;
+let juegoIniciado = false;
 let powerUP;
 let hasPowerUp = false;
 let score = 0;
 let live = 3
 let saltosRealizados = 0;
-let enemies = [];
 let bg
 let BandaSonora;
 let efectoSalto;
@@ -16,7 +15,7 @@ let x = 0;
 
 
 function preload() {
-
+  inicio = loadImage('./assets/inicio.png')
   BandaSonora = loadSound('./assets/NinjaNoseCuanto.mp3');
   efectoSaltar = loadSound('./assets/salto.wav');
   //efectoCaminar = loadSound('./assets/caminar.wav')
@@ -30,17 +29,11 @@ function setup() {
   world.gravity.y = 10;
   allSprites.pixelPerfect = true;
 
-  walls = new Group();
-  walls.color = "black";
-  walls.h = 15;
-  walls.w = 15;
-  walls.layer = 0;
-  walls.collider = "static";
-  walls.tile = "=";
 
   grass = new Group();
   grass.color = "green";
   grass.img = 'assets/block.png';
+  grass.visible = false
   grass.h = 15;
   grass.w = 15;
   grass.layer = 0;
@@ -49,6 +42,7 @@ function setup() {
 
   water = new Group();
   water.img = 'assets/water.png';
+  water.visible = false
   water.layer = 2;
   water.h = 18;
   water.w = 18;
@@ -58,12 +52,14 @@ function setup() {
 
   coins = new Group();
   coins.color = "yellow";
+  coins.visible = false
   coins.h = 5;
   coins.w = 5;
   coins.collider = "static";
   coins.tile = "c";
 
   powerUP = new Group();
+  powerUP.visible = false
   powerUP.color = "red";
   powerUP.tile = "o";
   powerUP.h = 5;
@@ -79,6 +75,7 @@ function setup() {
 
   sands = new Group();
   sands.img = 'assets/arena.png';
+  sands.visible = false
   sands.color = 'brown'
   sands.collider = "static";
   sands.w = 15;
@@ -90,15 +87,17 @@ function setup() {
   logs = new Group();
   logs.img = 'assets/madera.png';
   logs.color = 'gray'
+  logs.visible = false
   logs.collider = "static";
   logs.w = 15;
   logs.h = 15;
   logs.tile = "b";
 
   player = new Sprite();
+  player.visible = false
   player.w = 12;
   player.h = 28;
-  //player.img = 'assets/ninjanormal.png';
+  player.img = 'assets/ninjanormal.png';
   player.rotationLock = true;
   player.friction = 0;
   player.layer = 1;
@@ -109,6 +108,7 @@ function setup() {
 
   door = new Group();
   door.w = 2;
+  door.visible = false
   door.h = 100;
   door.visible = true;
   door.collider = 'static'
@@ -117,13 +117,16 @@ function setup() {
 
   //etiqueten a mamamelmonstruo
 
-  logs = new Group();
-  logs.layer = 2;
-  logs.color = "violet";
-  logs.h = 10;
-  logs.w = 10;
-  logs.collider = "static";
-  logs.tile = "h";
+  esca = new Group();
+  esca.img = 'assets/esca.png'
+  esca.visible = false
+  esca.layer = 2;
+  esca.color = "violet";
+  esca.h = 10;
+  esca.w = 10;
+  esca.collider = "static";
+  esca.tile = "h";
+  
 
   level1 = new Tiles(
     [
@@ -132,25 +135,26 @@ function setup() {
       "  g                                                                                                                  g                                                                                                                                                                                                                                               g         g                                                                                                                                                                                                                                                                                                                      ",
       "  g                                                                                                                    g                                                                                                                                                                                                                                             g         g                                                                                                                                                                                                                                                                                                                      ",
       "   g                                                                                                                   g                                                                                                                                                                                                                                             g         g                                                                                                                                                                                                                                                                                                                      ",
-      "   g                                                                                                                 g                                                                                                                                                                                                                                               g         g                                                                                                                                                                                                                                                                                                                      ",                                                                                   
+      "   g                                                                                                                 g                                                                                                                                                                                                                                               g         g                                                                                                                                                                                                                                                                                                                      ",
       "   g                                                                                                             ggggggg                                                                                                                                                                                                                                             ggggggggggggggg                                                gggggggggggggggggggggggggggg                                                                                                                                                                                                                                      ",
       "   g                                                                                                         gggg                                                                                                                                                                                                                                                     bbccc         ggggggg                                  ggggggg                            gggg                                                                                                                                                                                                                                  ",
-      "    g                                                                                                       g  g   c c                                                                                                       g                                                                                                                                        bbccc       c        gggggg                      gggggg          c                            gggg                                                                                                                                                                                                                              ",
+      "    g                                                                                                       g  g   c c                                                                                                       g                                                                                                                                        bbccc       c        gggggg                      gggggg          c               c            gggg                                                                                                                                                                                                                              ",
       "    g                                                                                                         gg c                                                                                                          g                                                                                g                                                        bbccc                      gggggg          gggggg                                                  ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggguggggggg                                                                                                        ",
-      "    g                                                                                                          g   c  c                                                                                                      g                                                       gggggggggggggggggggggggggug                                                    ggggggggggggggggwwwwwwwwwwwwwwwwwwwggggggggggwwwwwwwwwwwwwwwwwwwgggggpppppppppppppppppgggggg                          hhh                              hhh                                  hhh                            gggggg                                                                                                  ",
-      "     ggg                                                                                              gggg      g  c                                                                                              gwwwwwwwwwg                                               ggggggggg                                                                                               gggggggwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwggggggg     ggggggggggggggggg     g                          h                                h                                    h                                   ggggg                                                                                             ",
-      "      gg                                                                                              g  g       g  c cc                                                                                  gggg      gwwwwwwwwwg                                         ggggggggg                                                                     ggggggggg                            ggggggwwwwwwwwwwwwwwwwwwwwwwgggggg                                  g                 c                      h                                      h                                h                                                                                                                    ",
-      "     g                                                                                                g  g       g  c                                                                                             gwwwwwwwwwggggggggggggggggggggggggggggggggggggggggggggg                                                                                                                        ggggggwwwwwwwwwwgggggg                                        g                                       hhh                                    hhh                              hhh                                                                                                                    ",
-      "     g                                                                                              gg    g       gggggg                                     c                                  gggg             gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                    ggggggggggggggggggggggggg          gggggggggg                                                      gggggggggg                                              g         gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggugg                               g                                          g                                  ",
-      "     g                                                             gg                   ggggppppppppg     g        bbbbb                                                                                         gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwggggggggggggggg                                                                                                                                                          g    c      wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                                   g                                          g                                  ",
-      "    g                                                    ggg       gg                   g  gggggggggg     g        bbccc                                   gggggg                     ggggg                      gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwgggggggggg                                                                                                                                                                    gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                                    g                                          g                                  ",
+      "    g                                                                                                          g   c  c                                                                                               c      g                                                       gggggggggggggggggggggggggug                                                    ggggggggggggggggwwwwwwwwwwwwwwwwwwwggggggggggwwwwwwwwwwwwwwwwwwwgggggpppppppppppppppppgggggg                          hhh                              hhh                                  hhh                           gggggg                                                                                                  ",
+      "     ggg                                                                                              gggg      g  c                                                                                             gwwwwwwwwwggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg                                                                 c                            gggggggwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwggggggg     ggggggggggggggggg     g                           h                                h                                    h                                   ggggg                                                                                             ",
+      "      gg                                                                                              g  g       g  c cc                                                                                  gggg   gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                                                                     ggggggggg                             ggggggwwwwwwwwwwwwwwwwwwwwwwgggggg                                   g                 c                    h           c                          h           c                    h                                                                                                                    ",
+      "     g                                                                                                g  g       g  c                                                                            c               gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                    c                                                                                           ggggggwwwwwwwwwwgggggg                                          g                                     hhh                                    hhh                              hhh                                                                                                                    ",
+      "     g                                                                                              gg    g       gggggg                                     c                                  gggg             gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                    ggggggggggggggggggggggggg          gggggggggg                                                    gggggggggg                                                g         gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggugg                               g                                          g                                  ",
+      "     g                                                             gg                   ggggppppppppg     g        bbbbb                                                                                         gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwggggggggggggggg                                                                                                                                                          g    c      wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                 c                 g                                          g                                  ",
+      "    g                                                    ggg       gg          c        g  gggggggggg     g        bbccc                                   gggggg                     ggggg                      gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwgggggggggg                                                                                                                                                                    gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                                    g                                          g                                  ",
       "    g                                                    g  gggg   gg     gggggggggg    g  g        g     g        bbccc                         ggggg                  ggggggg                                  ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg                                                                                                                                                                       gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww                ggggggg             gggggggggggggggggggggggggggggggggggggggggggg                                  ",
       "    g                                           gggggg   g     g   g g    g        g    g  g        g     g      gggggggggggg       ggggg                                                                                                                                                                                                                                                                                                                      gwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww         ggggggg                                                                                                  ",
       "    g          v                                g    g   g    g    g g   g         g    g  g         g    g      g                                                                                                                                                                                                                                                                                                                                             gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg                                                                                                         ",
       "     ggwwwwwgggggggggggggggggggggggggggggggggggg     g  g     g    g g   ggg               g          g   g       g                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ",
       "       gwwwg                                         g  g     g    g g      g             g           g   g        g                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ",
       "        ggg                                         g   g     g    g g      g             g           g   g        g                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ",
-    ],                              
+      "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ],
     -180,
     -70,
     16,
@@ -164,31 +168,6 @@ function setup() {
   groundSensor.overlaps(allSprites);
 
   new GlueJoint(player, groundSensor);
-
-
-  //Enemigos
-  
-  for (let i = 0; i < 1; i++) {
-    let enemy = new Enemy(1,150, 2); 
-    enemies.push(enemy);
-  }
-
-}
-class Enemy {
-  constructor(x, y, speed) {
-    this.sprite = createSprite(x, y, 20, 20); 
-    this.speed = speed; 
-  }
-
-  update(player) {
-
-    let direction = createVector(player.position.x - this.sprite.position.x, player.position.y - this.sprite.position.y);
-    direction.normalize();
-    direction.mult(this.speed);
-    this.sprite.velocity.x = direction.x;
-    this.sprite.velocity.y = direction.y;
-  }
-
 }
 
 function collectCoin(player, coin) {
@@ -197,15 +176,18 @@ function collectCoin(player, coin) {
 }
 
 function draw() {
-  background('black')
+  
   Game();
 }
 
 function Game() {
   if (juegoIniciado) {
+    background('#524646')
     fill(255);
+    textSize(15)
     text("Score: " + score, 530, 20);
     fill(255);
+    textSize(15)
     text("Live: " + live, 530, 40);
     camera.x = player.x - (-100);
     elementControl();
@@ -215,20 +197,42 @@ function Game() {
     elementMove()
     keyPressed()
     Loque()
+    player.visible = true
+    door.visible = true
+    esca.visible = true
+    sands.visible = true
+    logs.visible = true
+    coins.visible = true
+    water.visible = true
+    grass.visible = true
+    water.visible = true
   } else {
-    clear();
-    fill(0);
-    textAlign(CENTER, CENTER);
-    textSize(32);
-    text("Presiona ESPACIO para iniciar", width / 2, height / 2);
+    background(inicio)
 
     if (keyIsDown(32)) {
       juegoIniciado = true;
     }
   }
+  if (live === 0) {
+    juegoIniciado = false
+    background('black')
+    fill(255);
+    text("Game Over", width / 2, height / 2);
+    textSize(15)
+    text("Preisone R para reiniciar", width / 2, height / 2 + 25);
+    player.visible = false
+    door.visible = false
+    esca.visible = false
+    sands.visible = false
+    logs.visible = false
+    coins.visible = false
+    water.visible = false
+    grass.visible = false
+    water.visible = false
+  }
 }
 
-function movePlayer() {
+function movePlayer1() {
   if (kb.pressing('left')) player.vel.x = -10;
   else if (kb.pressing('right')) player.vel.x = 10;
   else player.vel.x = 0;
@@ -238,7 +242,7 @@ function movePlayer() {
 
 }
 
-function movePlayer1() {
+function movePlayer() {
   if (groundSensor.overlapping(water)) {
     player.drag = 20;
     player.friction = 10;
@@ -250,17 +254,17 @@ function movePlayer1() {
   if (groundSensor.overlapping(grass) ||
     groundSensor.overlapping(water)) {
     if (kb.presses('up') || kb.presses('space')) {
-      player.vel.y = -4.5;
+      player.vel.y = -4;
       efectoSaltar.play()
     }
   }
 
   if (kb.pressing("left")) {
-    player.vel.x = -2;
+    player.vel.x = -3;
     player.mirror.x = true;
     //efectoCaminar.play();
   } else if (kb.pressing("right")) {
-    player.vel.x = 2;
+    player.vel.x = 3;
     player.mirror.x = false;
     //efectoCaminar.play();
   } else {
@@ -289,9 +293,7 @@ function elementMove() {
     }
   }
 
-  for (let enemy of enemies) {
-    enemy.update(player);
-  }
+
 }
 
 function checkPowerUp() {
@@ -322,13 +324,13 @@ function elementControl() {
 function elementBullets() {
   if (mouse.presses() && elementoActual === "fuego") {
     let bullet = new Sprite(player.x, player.y);
-    bullet.diameter = 8;
+    bullet.diameter = 10;
     let angle = atan2(mouseY - player.y, mouseX - player.x);
     let speedx = 10;
-    let speedy = 5;
+    let speedy = 10;
     bullet.vel.x = cos(angle) * speedx;
     bullet.vel.y = sin(angle) * speedy;
-    bullet.color = "orange";
+    bullet.img = "assets/fuego.png";
     bullet.collides(grass, (bullet, grass) => {
       bullet.remove();
     })
@@ -346,7 +348,7 @@ function elementBullets() {
     let speed = 10;
     bullet.vel.x = cos(angle) * speed;
     bullet.vel.y = sin(angle) * speed;
-    bullet.color = "yellow";
+    bullet.img = "assets/rayo.png";
     bullet.collides(grass, (bullet, grass) => {
       bullet.remove();
     });
@@ -372,6 +374,7 @@ function Loque() {
     if (elementoActual === "fuego" || elementoActual === "viento" || elementoActual === "electricoº") {
       player.x = 50;
       player.y = 220;
+      live --
     }
   }
   if (groundSensor.overlapping(grass)) {
@@ -380,4 +383,13 @@ function Loque() {
       player.y = 220;
     }
   }
+
+  if (player.overlapping(deathBox)) {
+    player.x = 50;
+    player.y = 220;
+    live --
+  }
 }
+
+
+  
